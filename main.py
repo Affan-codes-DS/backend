@@ -20,6 +20,7 @@ import base64
 import time
 from io import BytesIO
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 import numpy as np
 import tensorflow as tf
@@ -32,7 +33,17 @@ except ImportError:
     keras = tf.keras
     print("Loaded Keras via standard tf.keras module.")
 
+
+
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # demo ke liye
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load model globally at startup
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "crack_model.h5")
